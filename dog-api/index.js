@@ -1,3 +1,5 @@
+const { sendResponse } = require('./responses/index');
+
 var dogs = [
   {
     breed: "Labrador Retriever",
@@ -20,30 +22,34 @@ var dogs = [
 ];
 
 exports.handler = async (event, context) => {
-  const { method, path } = event.requestContext.http;
+  return sendResponse(200, {dogs})
+}
 
-  if (method === "GET" && path === "/dog") {
-    return {
-      statusCode: 200,
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ dogs }),
-    };
-  }
-  else if (method === "POST" && path === "/dog") {
-    const body = JSON.parse(event.body);
-    dogs.push(body);
+// exports.handler = async (event, context) => {
+//   const { method, path } = event.requestContext.http;
 
-    return {
-        statusCode: 200,
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ success : true }),
+//   if (method === "GET" && path === "/dog") {
+//     return {
+//       statusCode: 200,
+//       headers: {
+//         "Content-type": "application/json",
+//       },
+//       body: JSON.stringify({ dogs }),
+//     };
+//   }
+//   else if (method === "POST" && path === "/dog") {
+//     const body = JSON.parse(event.body);
+//     dogs.push(body);
 
-    };
-  }
+//     return {
+//         statusCode: 200,
+//         headers: {
+//           "Content-type": "application/json",
+//         },
+//         body: JSON.stringify({ success : true }),
 
-  return "Hej";
-};
+//     };
+//   }
+
+//   return "Hej";
+// };
