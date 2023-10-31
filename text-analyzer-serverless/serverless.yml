@@ -1,0 +1,36 @@
+service: text-analyzer-serverless
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  profile: braindome
+  region: eu-north-1
+  iam:
+    role: arn:aws:iam::115014104341:role/lectures-cloud
+
+plugins:
+  - serverless-webpack
+
+package: 
+  individually: true
+
+functions:
+  countWords:
+    handler: functions/countWords/index.handler
+    events:
+      - httpApi:
+          path: '/word-count'
+          method: POST
+  getSummary:
+    handler: functions/getSummary/index.handler
+    events:
+      - httpApi:
+          path: '/summary'
+          method: POST
+  listWords:
+    handler: functions/listWords/index.handler
+    events:
+      - httpApi:
+          path: '/word-list'
+          method: POST
