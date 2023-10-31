@@ -34,3 +34,9 @@ functions:
       - httpApi:
           path: '/word-list'
           method: POST
+  getStats:
+    handler: functions/getStats/index.handler
+    events:
+      - httpApi:
+          path: '/stats'
+          method: POST

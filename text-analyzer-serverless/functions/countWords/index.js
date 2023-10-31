@@ -1,14 +1,16 @@
 const { sendResponse } = require("../../responses/index.js");
+const { turnTextToArray } = require("../../utils/textToWordArray");
+const { ReturnOptions } = require("../../utils/ReturnOptions");
 
-function countWords(text) {
-  var words = text.split(/\s+/);
+// function countWords(text) {
+//   var words = text.split(/\s+/);
 
-  words = words.filter(function (word) {
-    return word.length > 0;
-  });
+//   words = words.filter(function (word) {
+//     return word.length > 0;
+//   });
 
-  return words.length;
-}
+//   return words.length;
+// }
 
 exports.handler = async (event, context) => {
   try {
@@ -19,7 +21,7 @@ exports.handler = async (event, context) => {
       return sendResponse(400, { error: "Invalid input" });
     }
 
-    const wordCount = countWords(text);
+    const wordCount = turnTextToArray(text, ReturnOptions.LENGTH);
 
     return sendResponse(200, { wordCount });
   } catch (error) {
