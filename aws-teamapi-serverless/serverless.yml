@@ -1,0 +1,45 @@
+service: aws-teamapi-serverless
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  profile: braindome
+  region: eu-north-1
+  iam:
+    role: arn:aws:iam::115014104341:role/lectures-cloud
+
+plugins:
+  - serverless-webpack
+
+package: 
+  individually: true
+
+functions:
+  getPlayers:
+    handler: functions/getPlayers/index.handler
+    events:
+      - httpApi:
+          path: '/team'
+          method: GET
+  postPlayer:
+    handler: functions/postPlayer/index.handler
+    events:
+      - httpApi:
+          path: '/team'
+          method: POST
+
+resources:
+  Resources:
+    teamDb:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: team-db
+        AttributeDefinitions:
+          - AttributeName: playerId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: playerId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        
