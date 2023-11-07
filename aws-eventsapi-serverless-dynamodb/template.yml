@@ -1,0 +1,17 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Ett exempel på AWS SAM-mall för en Lambda-funktion.
+
+Resources:
+  getTicketByNumber:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/getTicketByNumber/
+      Handler: index.handler
+      Runtime: nodejs18.x
+      Events:
+        RetrieveTicket:
+          Type: Api 
+          Properties:
+            Path: /retrieve-ticket
+            Method: post

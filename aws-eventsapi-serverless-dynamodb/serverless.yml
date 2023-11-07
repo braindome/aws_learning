@@ -1,0 +1,81 @@
+service: aws-eventsapi-serverless-dynamodb
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  profile: braindome
+  region: eu-north-1
+  iam:
+    role: arn:aws:iam::115014104341:role/lectures-cloud
+
+plugins:
+  - serverless-webpack
+
+package: 
+  individually: true
+
+
+functions:
+  getEvents:
+    handler: functions/getEvents/index.handler
+    events:
+      - httpApi:
+          path: '/events'
+          method: GET
+  postEvents:
+    handler: functions/postEvents/index.handler
+    events:
+      - httpApi:
+          path: '/events'
+          method: POST
+  buyTicket:
+    handler: functions/buyTicket/index.handler
+    events:
+      - httpApi:
+          path: '/buy'
+          method: POST
+  getTicketByNumber:
+    handler: functions/getTicketByNumber/index.handler
+    events:
+      - httpApi:
+          path: '/retrieve-ticket'
+          method: POST
+  getEventById:
+    handler: functions/getEventById/index.handler
+    events:
+      - httpApi:
+          path: '/retrieve-event'
+          method: POST
+  verifyTicket:
+    handler: functions/verifyTicket/index.handler
+    events:
+      - httpApi:
+          path: '/verify'
+          method: PUT
+
+resources:
+  Resources:
+    eventDb:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: event-db
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    ticketDb:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ticket-db
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST

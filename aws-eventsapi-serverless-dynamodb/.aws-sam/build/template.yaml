@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: "Ett exempel p\xE5 AWS SAM-mall f\xF6r en Lambda-funktion."
+Resources:
+  eventDb:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: event-db
+      AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+      KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+  ticketDb:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ticket-db
+      AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+      KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+  getTicketByNumber:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: getTicketByNumber
+      Handler: index.handler
+      Runtime: nodejs18.x
+      Events:
+        RetrieveTicket:
+          Type: Api
+          Properties:
+            Path: /retrieve-ticket
+            Method: post
+    Metadata:
+      SamResourceId: getTicketByNumber
