@@ -1,0 +1,31 @@
+service: crypto-serverless
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  profile: braindome
+  region: eu-north-1
+  iam:
+    role: arn:aws:iam::115014104341:role/lectures-cloud
+
+plugins:
+  - serverless-webpack
+
+package: 
+  individually: true
+
+functions:
+  encrypt:
+    handler: functions/encrypt/index.handler
+    events:
+      - httpApi:
+          path: '/encrypt'
+          method: POST
+  decrypt:
+    handler: functions/decrypt/index.handler
+    events:
+      - httpApi:
+          path: '/decrypt'
+          method: POST
+

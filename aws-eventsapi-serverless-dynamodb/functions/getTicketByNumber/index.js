@@ -4,7 +4,7 @@ const AWS = require("aws-sdk");
 const db = new AWS.DynamoDB.DocumentClient();
 
 module.exports.handler = async (lambdaEvent, context) => {
-  // 1. Parse ticket number from input and vaidates it
+  // 1. Parse ticket number from input and validates it
 
   const ticketNumberInput = JSON.parse(lambdaEvent.body);
 
